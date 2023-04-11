@@ -3,14 +3,17 @@ import { BsSearch } from 'react-icons/bs';
 import styles from './Navbar.module.scss';
 import { useRef } from 'react';
 import { useScrollY } from '../hooks';
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
     /* Xử lý logic của thanh search */
     const inputRef = useRef();
+    const navigate = useNavigate();
     const handleClick = () => {
         Object.assign(inputRef.current.style, {
             width: '250px',
             border: '1px solid #222'
         })
+        // navigate("/search");
     }
     const handleBlur = () => {
         Object.assign(inputRef.current.style, {

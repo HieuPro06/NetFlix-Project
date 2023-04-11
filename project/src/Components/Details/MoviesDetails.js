@@ -3,11 +3,12 @@ import { MdCancel } from 'react-icons/md';
 import { BsDownload } from 'react-icons/bs';
 import { BiCameraMovie } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux';
+import ReactPlayer from 'react-player';
 import clsx from 'clsx';
 const MoviesDetails = () => {
+    const dispatch = useDispatch();
     /* Xử lý banner */
     const enableContent = useSelector(state => state.enable);
-    const dispatch = useDispatch();
     /* Xử lý video */
     const isOpenVideo = useSelector(state => state.video);
     return (
@@ -18,22 +19,23 @@ const MoviesDetails = () => {
                 [styles.hide]: enableContent === false,
             })}
                 style={{
-                    backgroundImage: `url(https://i.pinimg.com/originals/32/f6/48/32f6482ca5c98ccd947a9c2cdaefdb08.png)`,
+                    backgroundImage: `url(http://image.tmdb.org/t/p/w500${localStorage.getItem("background")})`,
                     backgroundSize: 'cover',
+                    objectFit: 'contain',
                     backgroundRepeat: 'no-repeat'
                 }}
             >
                 <div className={clsx(styles.container)} >
                     <div className={styles.movieInfo}>
-                        <h1 className={styles.movieName}>Band</h1>
+                        <h1 className={styles.movieName}>{localStorage.getItem("name")}</h1>
                         <div className={styles.statistical}>
-                            <span className={styles.movieRate}>Rating 82%</span>
-                            <span className={styles.moviePopular}>Popularity : 123.456</span>
+                            <span className={styles.movieRate}>Rating {localStorage.getItem("rating")}</span>
+                            <span className={styles.moviePopular}>Popularity : {localStorage.getItem("popularity")}</span>
                         </div>
-                        <p className={styles.releaseDay}>Release Date : 21/03/2023</p>
+                        <p className={styles.releaseDay}>Release Date : {localStorage.getItem("releaseDate")}</p>
                         <p className={styles.runTime}>Runtime : 2 hour</p>
                         <p className={styles.overView}>
-                            Việc tìm kiếm một tiền đạo đẳng cấp trong mùa Hè là yêu cầu cấp thiết của Man United. Harry Kane, Victor Osimhen và Goncalo Ramos là những mục tiêu đã được chỉ ra cho Quỷ đỏ thành Manchester.
+                            {localStorage.getItem("info")}
                         </p>
                     </div>
                 </div>
@@ -53,13 +55,13 @@ const MoviesDetails = () => {
                 <div className={styles.trailerVideo} style={
                     isOpenVideo ? { display: "block" } : { display: "none" }
                 }>
-                    <iframe
-                        src="https://www.youtube.com/embed/RK1K2bCg4J8"
-                        frameborder="0"
-                        width="1000"
-                        height="500"
-                    >
-                    </iframe>
+                    <ReactPlayer
+                        playing={false}
+                        url="https://www.youtube.com/watch?v=9VsCq3_6i88"
+                        controls={true}
+                        width="1000px"
+                        height="500px"
+                    />
                     <span className={styles.cancel} onClick={() => dispatch({ "type": "close" })}>
                         <MdCancel />
                     </span>

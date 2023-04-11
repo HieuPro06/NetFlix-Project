@@ -1,38 +1,39 @@
 import MoviesRow from './MoviesRow';
 import styles from './Contents.module.scss';
 import { useDispatch, useSelector } from "react-redux";
-import { movies } from './Movies/movies';
-import { trendingMovies } from './Movies/trendingMovies';
-import { topRatedMovies } from './Movies/topRatedMovies';
-import { actionMovies } from './Movies/actionMovies';
-import { comedyMovies } from './Movies/comedyMovies';
-import { horrorMovies } from './Movies/horrorMovies';
 import { useEffect } from 'react';
-import { getNetFlixOriginal } from '../store/action/index.js';
+import * as FUNC from '../../ReduxStore/action/index';
 import { ImArrowUp } from 'react-icons/im';
 import { animateScroll as scroll } from 'react-scroll';
 import { useScrollY } from '../hooks';
 
 const Contents = () => {
     const dispatch = useDispatch();
-    // const { NetFlixOriginals } = useSelector(state => state.infoMovies);
+    const { NetflixOriginals, TrendingMovies, TopRatedMovies, ActionMovies,
+        ComedyMovies, HorrorMovies, RomanceMovies, DocumentaryMovies } = useSelector(state => state.movies);
     const ScrollToTop = () => {
         scroll.scrollToTop();
     }
     useEffect(() => {
-        dispatch(getNetFlixOriginal());
+        dispatch(FUNC.getNetflixOriginal());
+        dispatch(FUNC.getTrendingMovies());
+        dispatch(FUNC.getTopRatedMovies());
+        dispatch(FUNC.getActionMovies());
+        dispatch(FUNC.getComedyMovies());
+        dispatch(FUNC.getHorrorMovies());
+        dispatch(FUNC.getRomanceMovies());
+        dispatch(FUNC.getDocumentaryMovies());
     }, [dispatch])
-
     return (
         <div className={styles.wrapContent}>
-            <MoviesRow linkMovies={movies} typeMovies="NetFlix Origin" idSection="NetFlix" />
-            <MoviesRow linkMovies={trendingMovies} typeMovies="Trending Movies" idSection="Trending" />
-            <MoviesRow linkMovies={topRatedMovies} typeMovies="Top Rated Movies" idSection="TopRated" />
-            <MoviesRow linkMovies={actionMovies} typeMovies="Action Movies" idSection="Action" />
-            <MoviesRow linkMovies={comedyMovies} typeMovies="Comedy Movies" idSection="Comedy" />
-            <MoviesRow linkMovies={horrorMovies} typeMovies="Horror Movies" idSection="Horror" />
-            <MoviesRow linkMovies={movies} typeMovies="Romance Movies" idSection="Romance" />
-            <MoviesRow linkMovies={movies} typeMovies="Documentaries Movies" idSection="Documentaries" />
+            <MoviesRow linkMovies={NetflixOriginals} typeMovies="NetFlix Origin" idSection="NetFlix" isNetflix={true} />
+            <MoviesRow linkMovies={TrendingMovies} typeMovies="Trending Movies" idSection="Trending" />
+            <MoviesRow linkMovies={TopRatedMovies} typeMovies="Top Rated Movies" idSection="TopRated" />
+            <MoviesRow linkMovies={ActionMovies} typeMovies="Action Movies" idSection="Action" />
+            <MoviesRow linkMovies={ComedyMovies} typeMovies="Comedy Movies" idSection="Comedy" />
+            <MoviesRow linkMovies={HorrorMovies} typeMovies="Horror Movies" idSection="Horror" />
+            <MoviesRow linkMovies={RomanceMovies} typeMovies="Romance Movies" idSection="Romance" />
+            <MoviesRow linkMovies={DocumentaryMovies} typeMovies="Documentaries Movies" idSection="Documentaries" />
             <div className={styles.goToTop} onClick={ScrollToTop}
                 style={{
                     visibility: `${useScrollY() > 800 ? 'visible' : 'hidden'}`

@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 const MoviesRow = (props) => {
     const enableContent = useSelector(state => state.enable);
     const dispatch = useDispatch();
-    const { linkMovies, typeMovies, idSection } = props;
+    const { linkMovies, typeMovies, idSection, isNetflix } = props;
     const [dragDown, setDragDown] = useState(0);
     const [dragMove, setDragMove] = useState(0);
     const [isDrag, setIsDrag] = useState(false);
@@ -67,19 +67,48 @@ const MoviesRow = (props) => {
             <h1 className={styles.title}>{typeMovies}</h1>
             <div
                 ref={sliderRef}
-                className={styles.slider} style={{ gridTemplateColumns: `repeat(${linkMovies.length},250px)` }}
+                className={styles.slider}
+                style={
+                    linkMovies && linkMovies.length > 0
+                        ? { gridTemplateColumns: `repeat(${linkMovies.length},250px)` } : {}
+                }
                 draggable="true"
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
                 onDragEnter={onDragEnter}
             >
+
                 {
-                    linkMovies.map((movie, index) => (
-                        <div ref={movieRef} className={styles.sliderItem} key={index} draggable="false" onClick={() => dispatch({ "type": "show" })}>
-                            <img src={movie} alt="" className={styles.image} draggable="false" />
-                            <p className={styles.name}>Movie Name</p>
-                        </div>
-                    ))
+                    // linkMovies && linkMovies.length > 0 && linkMovies.map((movie, index) => (
+                    //     <div ref={movieRef} className={styles.sliderItem} key={index} draggable="false" onClick={() => dispatch({ "type": "show" })}>
+                    //         <img src={movie} alt="" className={styles.image} draggable="false" />
+                    //         <p className={styles.name}>Movie Name</p>
+                    //     </div>
+                    // ))
+                    linkMovies && linkMovies.length > 0 && linkMovies.map((movie, index) => {
+                        if (movie.poster_path && movie.backdrop_path !== null) {
+                            var imageUrl = isNetflix
+                                ? `http://image.tmdb.org/t/p/original${movie.poster_path}` : `http://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
+                        }
+                        return (
+                            <div ref={movieRef} className={styles.sliderItem} key={index} draggable="false"
+                                onClick={() => {
+                                    dispatch({ "type": "show" });
+                                    localStorage.setItem("name", movie.name || movie.title);
+                                    localStorage.setItem("rating", movie.vote_average);
+                                    localStorage.setItem("popularity", movie.popularity);
+                                    localStorage.setItem("releaseDate", movie.first_air_date);
+                                    localStorage.setItem("info", movie.overview);
+                                    localStorage.setItem("background", movie.backdrop_path);
+                                }}
+                            >
+                                <img src={imageUrl} alt="" className={styles.image} draggable="false" />
+                                <p className={styles.name}>
+                                    {movie.title || movie.name}
+                                </p>
+                            </div>
+                        )
+                    })
                 }
             </div>
             <div className={styles.btnLeft} onClick={() => {
