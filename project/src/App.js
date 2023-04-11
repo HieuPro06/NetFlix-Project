@@ -4,11 +4,9 @@ import Footer from './Components/Footer/Footer';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Search from './pages/Search';
-// #13 #14  #17 Sau này xem kĩ lại bài này đặc biệt  là async await call API
+//#17 #20
 
-
-
-// #13 
+// #17
 function App() {
   return (
     <div className="App">
