@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const MoviesRow = (props) => {
     const enableContent = useSelector(state => state.enable);
+    const infoBanner = useSelector(state => state.data);
     const dispatch = useDispatch();
     const { linkMovies, typeMovies, idSection, isNetflix } = props;
     const [dragDown, setDragDown] = useState(0);
@@ -94,12 +95,14 @@ const MoviesRow = (props) => {
                             <div ref={movieRef} className={styles.sliderItem} key={index} draggable="false"
                                 onClick={() => {
                                     dispatch({ "type": "show" });
-                                    localStorage.setItem("name", movie.name || movie.title);
-                                    localStorage.setItem("rating", movie.vote_average);
-                                    localStorage.setItem("popularity", movie.popularity);
-                                    localStorage.setItem("releaseDate", movie.first_air_date);
-                                    localStorage.setItem("info", movie.overview);
-                                    localStorage.setItem("background", movie.backdrop_path);
+                                    dispatch({ type: "up", payload: movie })
+                                    // localStorage.setItem("name", movie.name || movie.title);
+                                    // localStorage.setItem("rating", movie.vote_average * 10);
+                                    // localStorage.setItem("popularity", movie.popularity);
+                                    // localStorage.setItem("releaseDate", movie.first_air_date
+                                    //     || movie.release_date);
+                                    // localStorage.setItem("info", movie.overview);
+                                    // localStorage.setItem("background", movie.backdrop_path);
                                 }}
                             >
                                 <img src={imageUrl} alt="" className={styles.image} draggable="false" />

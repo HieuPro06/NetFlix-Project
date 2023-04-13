@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as Types from '../types/types';
-
+// import { useDispatch } from "react-redux";
 /* My API Key */
 const API_KEY = "e0669d426c0a455d1f1a29d3ecbb44ee";
 
@@ -86,5 +86,26 @@ export const getDocumentaryMovies = () => async dispatch => {
         dispatch({ type: Types.GET_DOCUMENTARY_MOVIES, payload: result.data.results })
     } catch (error) {
         console.log('Get Documentary API error', error);
+    }
+}
+export const getTrailerVideo = (props) => async dispatch => {
+    try {
+        const result = await axios.get(
+            `http://api.themoviedb.org/3/movie/${props.id}/videos?api_key=${API_KEY}`
+        );
+        dispatch({ type: "getTrailer", payload: result.data.results[0].key })
+    } catch (error) {
+        console.log('error');
+    }
+}
+
+export const getSearchMovies = (keyword) => async dispatch => {
+    try {
+        const result = await axios.get(
+            `${BASE_API}/search/multi?api_key=${API_KEY}&language=en-US&include_adult=false&query=${keyword}`
+        )
+        dispatch({ type: Types.GET_SEARCH_MOVIE, payload: result.data.results })
+    } catch (error) {
+        console.log('error Search');
     }
 }

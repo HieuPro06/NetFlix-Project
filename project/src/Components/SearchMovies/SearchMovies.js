@@ -1,17 +1,35 @@
 import styles from './SearchMovies.module.scss';
-import { actionMovies } from '../Contents/Movies/actionMovies.js';
 import clsx from 'clsx';
+import { useSelector, useDispatch } from 'react-redux';
 const SearchMovies = () => {
-    const movieList = actionMovies;
+    const MovieSearch = useSelector(state => state.movies);
+    const movieList = MovieSearch.SearchMovie;
+    const infoBanner = useSelector(state => state.data);
+    const dispatch = useDispatch();
+    const handle = (movie) => {
+        dispatch({ "type": "show" });
+        dispatch({ type: "up", payload: movie })
+    }
+    console.log(movieList);
     return (
         <div className={styles.searchWrap}>
             <div className={styles.searchMoviesList}>
                 {
                     movieList && movieList.length > 0 ?
                         (movieList.map((movie, index) => (
-                            <div className={clsx(styles.searchMoviesItem, styles[`item${index + 1}`])} key={index}>
-                                <img className={styles.img} src={movie} alt="" />
-                                <span className={styles.searchMoviesName}>Neymar Hair</span>
+                            <div
+                                className={clsx(styles.searchMoviesItem, styles[`item${index + 1}`])}
+                                key={index}
+                                onClick={(movie) => {
+                                    handle(movie)
+                                }}
+                            >
+                                <img
+                                    className={styles.img} style={{ color: 'white' }}
+                                    src={`http://image.tmdb.org/t/p/w500${movie.backdrop_path}` || `http://image.tmdb.org/t/p/original${movie.poster_path}`}
+                                // alt="Hiện tại chúng tôi chưa có ảnh cho bộ phim này"
+                                />
+                                <span className={styles.searchMoviesName}>{movie.name || movie.title}</span>
                             </div>
                         ))) :
                         (
