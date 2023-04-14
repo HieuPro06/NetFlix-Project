@@ -1,12 +1,14 @@
 import styles from './SearchMovies.module.scss';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
+import noImage from '../../assets/images/noImage.jpg';
 const SearchMovies = () => {
     const MovieSearch = useSelector(state => state.movies);
     const movieList = MovieSearch.SearchMovie;
     const infoBanner = useSelector(state => state.data);
     const dispatch = useDispatch();
     const handle = (movie) => {
+        console.log(movie);
         dispatch({ "type": "show" });
         dispatch({ type: "up", payload: movie })
     }
@@ -20,13 +22,14 @@ const SearchMovies = () => {
                             <div
                                 className={clsx(styles.searchMoviesItem, styles[`item${index + 1}`])}
                                 key={index}
-                                onClick={(movie) => {
+                                onClick={() => {
                                     handle(movie)
                                 }}
                             >
                                 <img
-                                    className={styles.img} style={{ color: 'white' }}
-                                    src={`http://image.tmdb.org/t/p/w500${movie.backdrop_path}` || `http://image.tmdb.org/t/p/original${movie.poster_path}`}
+                                    className={styles.img} style={{ objectFit: 'cover' }}
+                                    src={(movie.backdrop_path || movie.poster_path) ? `http://image.tmdb.org/t/p/w500${movie.backdrop_path}` || `http://image.tmdb.org/t/p/original${movie.poster_path}` : noImage}
+
                                 // alt="Hiện tại chúng tôi chưa có ảnh cho bộ phim này"
                                 />
                                 <span className={styles.searchMoviesName}>{movie.name || movie.title}</span>
