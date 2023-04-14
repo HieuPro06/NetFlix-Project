@@ -4,9 +4,8 @@ import Footer from './Components/Footer/Footer';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Search from './pages/Search';
-//#17 #20
+//#20
 
-// #17
 function App() {
   return (
     <div className="App">
